@@ -2,15 +2,20 @@ import { Metadata } from "next";
 import { ReactNode } from "react";
 
 import "./globals.css";
+import Provider from "./components/providers/Provider";
 
 export const metadata: Metadata = {
-    title: "Link Sharing",
+    title: "Login",
 };
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
     return (
-        <html>
-            <body>{children}</body>
+        <html lang="en">
+            <body className="body">
+                <Provider>
+                    <div className="page_container">{children}</div>
+                </Provider>
+            </body>
         </html>
     );
 };

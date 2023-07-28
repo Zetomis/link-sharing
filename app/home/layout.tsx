@@ -1,12 +1,18 @@
+"use client";
+
 import { ReactNode } from "react";
 import Navbar from "../components/previews/Navbar";
 import ProtectRoute from "../components/auths/ProtectRoute";
+import { Provider } from "react-redux";
+import { store } from "../store";
 
 const HomeLayout = ({ children }: { children: ReactNode }) => {
     return (
         <ProtectRoute>
-            <Navbar />
-            {children}
+            <Provider store={store}>
+                <Navbar />
+                {children}
+            </Provider>
         </ProtectRoute>
     );
 };

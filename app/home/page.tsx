@@ -1,14 +1,16 @@
 "use client";
 
-import { signOut } from "next-auth/react";
 import ProtectRoute from "../components/auths/ProtectRoute";
+import { useAppSelector } from "../hooks";
+import LinkPage from "../components/homePages/LinkPage";
+import ProfilePage from "../components/homePages/ProfilePage";
 
 const HomePage = () => {
+    const currentPage = useAppSelector((state) => state.currentPage);
+
     return (
         <ProtectRoute>
-            <h1>
-                <button onClick={() => signOut()}>Sign Out</button>
-            </h1>
+            {currentPage.isLinksPage ? <LinkPage /> : <ProfilePage />}
         </ProtectRoute>
     );
 };

@@ -19,15 +19,19 @@ body {
     @apply bg-white px-6 py-4 rounded-md w-full max-w-md;
 }
 .navbar_container {
-    @apply grid grid-cols-3 gap-x-4 items-center;
+    @apply grid grid-cols-3 gap-x-4 items-center bg-white px-6 py-4 rounded-md;
 }
 
 /* Button */
-button {
+button,
+.button {
     @apply px-4 py-2 border rounded-md font-semibold;
 }
 .button_default {
     @apply bg-gray-800 text-white;
+}
+.button_link {
+    @apply bg-gray-200 text-gray-800;
 }
 
 /* Input */

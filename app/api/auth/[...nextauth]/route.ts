@@ -1,35 +1,40 @@
-import NextAuth, { AuthOptions } from "next-auth";
+import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 
 import { PrismaClient } from "@prisma/client";
+import NextAuth from "next-auth/next";
 const prisma = new PrismaClient();
 
-const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: { label: "username", type: "text" },
-                password: { label: "password", type: "password" },
+                name: { label: "Name", type: "text" },
+                password: { label: "Password", type: "password" },
             },
-            async authorize(crentials) {
-                if (!crentials?.username || !crentials?.password) {
+            async authorize(credetials) {
+                if (!credetials?.name || !credetials?.password) {
                     throw new Error("Missing credentials");
                 }
 
                 const user = await prisma.user.findUnique({
                     where: {
-                        username: crentials?.username,
+                        name: credetials.name,
                     },
                 });
 
-                const isMatchedPassword = await compare(
-                    crentials.password,
-                    user?.password ?? ""
+                if (!user) {
+                    throw new Error("Invalid credentials");
+                }
+
+                const isMatch = await compare(
+                    credetials.password,
+                    user.password
                 );
 
-                if (user && isMatchedPassword) {
+                if (isMatch) {
                     return user;
                 }
 
@@ -37,6 +42,22 @@ const authOptions: AuthOptions = {
             },
         }),
     ],
+    callbacks: {
+        async session({ session }) {
+            const user = await prisma.user.findUnique({
+                where: {
+                    name: session.user.name,
+                },
+            });
+
+            if (user) {
+                session.user.id = user.id;
+                session.user.image = user.image;
+            }
+
+            return session;
+        },
+    },
     secret: process.env.SECRET,
     pages: {
         signIn: "/",

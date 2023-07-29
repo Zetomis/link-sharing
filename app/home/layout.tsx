@@ -10,8 +10,10 @@ const HomeLayout = ({ children }: { children: ReactNode }) => {
     return (
         <ProtectRoute>
             <Provider store={store}>
-                <Navbar />
-                {children}
+                <div className="flex flex-col gap-y-4">
+                    <Navbar />
+                    {children}
+                </div>
             </Provider>
         </ProtectRoute>
     );

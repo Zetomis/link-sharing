@@ -4,10 +4,10 @@ import Link from "next/link";
 
 const Logo = () => {
     return (
-        <Link href={"/"} className="flex items-center gap-x-1">
+        <div className="flex items-center gap-x-1 cursor-pointer">
             <FontAwesomeIcon icon={faHome} className="w-6 h-6" />
             <h1 className="font-extrabold text-2xl">devlinks</h1>
-        </Link>
+        </div>
     );
 };
 

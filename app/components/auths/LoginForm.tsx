@@ -8,7 +8,7 @@ import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { signIn } from "next-auth/react";
 
 const LoginForm = () => {
-    const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
 
@@ -16,7 +16,7 @@ const LoginForm = () => {
         event.preventDefault();
 
         const signInResponse = await signIn("credentials", {
-            username,
+            name,
             password,
             redirect: false,
             callbackUrl: "/home",
@@ -40,14 +40,14 @@ const LoginForm = () => {
                     Add Add your details below to get back into the app.
                 </p>
 
-                <label htmlFor="">Username:</label>
+                <label htmlFor="">Name:</label>
                 <div className="input_field">
                     <FontAwesomeIcon icon={faEnvelope} />
                     <input
                         type="text"
                         onChange={(e) => {
                             setError(null);
-                            setUsername(e.target.value);
+                            setName(e.target.value);
                         }}
                     />
                 </div>

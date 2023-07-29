@@ -8,7 +8,7 @@ import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { signIn } from "next-auth/react";
 
 const RegisterForm = () => {
-    const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmedPassword, setCofirmedPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
@@ -21,7 +21,7 @@ const RegisterForm = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                username: username,
+                name: name,
                 password: password,
                 confirmedPassword: confirmedPassword,
             }),
@@ -29,7 +29,7 @@ const RegisterForm = () => {
 
         if (response.ok) {
             const signInResponse = await signIn("credentials", {
-                username: username,
+                name: name,
                 password: password,
                 redirect: false,
                 callbackUrl: "/home",
@@ -56,14 +56,14 @@ const RegisterForm = () => {
                     Lets get you started sharing your links!
                 </p>
 
-                <label htmlFor="">Username:</label>
+                <label htmlFor="">Name:</label>
                 <div className="input_field">
                     <FontAwesomeIcon icon={faEnvelope} />
                     <input
                         type="text"
                         onChange={(e) => {
                             setError(null);
-                            setUsername(e.target.value);
+                            setName(e.target.value);
                         }}
                     />
                 </div>

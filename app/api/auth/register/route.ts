@@ -4,19 +4,19 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const POST = async (req: Request) => {
-    const { username, password, confirmedPassword } = await req.json();
+    const { name, password, confirmedPassword } = await req.json();
 
-    if (!username || !password || !confirmedPassword) {
+    if (!name || !password || !confirmedPassword) {
         throw new Error("Missing credentials");
     }
 
     const existedUser = await prisma.user.findUnique({
         where: {
-            username: username,
+            name: name,
         },
     });
     if (existedUser) {
-        return new Response(JSON.stringify("Username already existed"), {
+        return new Response(JSON.stringify("Name already existed"), {
             status: 403,
         });
     }
@@ -31,7 +31,7 @@ export const POST = async (req: Request) => {
 
     const newUser = await prisma.user.create({
         data: {
-            username: username,
+            name: name,
             password: hashedPassword,
         },
     });

@@ -68,7 +68,7 @@ const LoginForm = () => {
                 <button className="button_default w-full">Login</button>
 
                 <p className="block mt-2">
-                    Don&apos;t have an account yet?{" "}
+                    Dont have an account yet?{" "}
                     <Link
                         className="font-semibold text-gray-800 hover:underline"
                         href={"/register"}

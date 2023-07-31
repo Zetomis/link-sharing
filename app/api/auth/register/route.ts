@@ -7,7 +7,9 @@ export const POST = async (req: Request) => {
     const { name, password, confirmedPassword } = await req.json();
 
     if (!name || !password || !confirmedPassword) {
-        throw new Error("Missing credentials");
+        return new Response(JSON.stringify("Missing Credentials"), {
+            status: 403,
+        });
     }
 
     const existedUser = await prisma.user.findUnique({

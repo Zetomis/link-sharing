@@ -1,12 +1,47 @@
 "use client";
 
 import { LinkType } from "@/app/libs/types";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import LinkBar from "../linkComp/LinkBar";
 
 const LinkPage = () => {
     const [links, setLinks] = useState<LinkType[]>([]);
+    const [addLinkLoading, setAddLinkLoading] = useState(false);
+    const { data: session } = useSession();
 
-    const handleNewLinks = async () => {};
+    const getCurrentUserLink = async () => {
+        const response = await fetch("/api/link");
+        const data = await response.json();
+        setLinks(data.links);
+    };
+
+    useEffect(() => {
+        if (session) {
+            getCurrentUserLink();
+        }
+    }, []);
+
+    const handleNewLinks = async () => {
+        setAddLinkLoading(true);
+        await fetch("/api/link", {
+            method: "POST",
+        });
+        getCurrentUserLink();
+        setAddLinkLoading(false);
+    };
+
+    const handleSave = () => {
+        links.forEach(async (link) => {
+            await fetch("/api/link", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ link }),
+            });
+        });
+    };
 
     return (
         <div>
@@ -19,15 +54,30 @@ const LinkPage = () => {
             </p>
             <button
                 className={`${
-                    links.length === 5 ? "button_link" : "button_default"
+                    links.length <= 4 || !addLinkLoading
+                        ? "button_default"
+                        : "button_link"
                 } w-full`}
                 onClick={() => {
-                    if (links.length < 5) {
+                    if (links.length <= 4 && !addLinkLoading) {
                         handleNewLinks();
                     }
                 }}
             >
-                + Add new link
+                + Add new link {addLinkLoading && "(loading...)"}
+            </button>
+            <div className="mt-4 flex flex-col gap-y-4">
+                {links &&
+                    links.map((link) => (
+                        <LinkBar
+                            link={link}
+                            links={links}
+                            setLinks={setLinks}
+                        />
+                    ))}
+            </div>
+            <button className="button_default w-full mt-4" onClick={handleSave}>
+                Save
             </button>
         </div>
     );

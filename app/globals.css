@@ -55,3 +55,28 @@ label {
 .input_field input {
     @apply text-lg focus:outline-none focus:border-none;
 }
+
+/* Linkbar */
+.linkbar {
+    @apply flex flex-col;
+}
+.linkbar label {
+    @apply font-semibold block mb-1;
+}
+
+/* Company */
+.GMAIL {
+    background-color: #1d9bf0;
+}
+.FACEBOOK {
+    background-color: #4285f4;
+}
+.GITHUB {
+    background-color: #000000;
+}
+.TWITTER {
+    background-color: #0165e1;
+}
+.YOUTUBE {
+    background-color: #ff0000;
+}
